@@ -76,3 +76,30 @@ Part 4 — Bootstrap the EC2 app (User Data)
 In EC2 launch, you can paste this in User data (or run manually after SSH).
 Important: Replace SECRET_ID if you used a different name.
 #user.data.sh
+
+Part 5 — Test
+  1) In RDS console, copy the endpoint (you won’t paste it into app because Secrets Manager provides host)
+  2) Open browser:
+      http://<EC2_PUBLIC_IP>/init
+      http://<EC2_PUBLIC_IP>/add?note=first_note
+      http://<EC2_PUBLIC_IP>/list
+  If /init hangs or errors, it’s almost always:
+    RDS SG inbound not allowing from EC2 SG on 3306
+    RDS not in same VPC/subnets routing-wise
+    EC2 role missing secretsmanager:GetSecretValue
+    Secret doesn’t contain host / username / password fields (fix by storing as “Credentials for RDS database”)
+
+Student Deliverables:
+1) Screenshot of:
+  RDS SG inbound rule using source = sg-ec2-lab
+  EC2 role attached
+  /list output showing at least 3 notes
+
+Short answers:
+A) Why is DB inbound source restricted to the EC2 security group?
+B) What port does MySQL use?
+C) Why is Secrets Manager better than storing creds in code/user-data?
+
+
+
+
