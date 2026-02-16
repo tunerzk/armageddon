@@ -64,8 +64,6 @@ Students repeatedly curl every ~6–10 seconds
 
 5. Student Investigation (Required)
 Step 1 — Observe headers
-<img width="1493" height="272" alt="image" src="https://github.com/user-attachments/assets/d325f8af-7040-49fd-b81f-0984263a49a0" />
-<img width="972" height="513" alt="image" src="https://github.com/user-attachments/assets/98a6f846-a450-48ed-9199-de9f1a720101" />
 
 
     curl -i https://chewbacca-growl.com/static/index.html | sed -n '1,25p'
@@ -80,7 +78,7 @@ Step 2 — Identify validators
 Students must find:
     ETag or
     Last-Modified
-<img width="1458" height="222" alt="image" src="https://github.com/user-attachments/assets/de11eded-8fea-4eab-955e-1d723566092f" />
+
 
 Step 3 — Explain RefreshHit (written)
 Students must state:
@@ -89,12 +87,8 @@ Students must state:
     It sent a conditional request to the origin using validators.
     The origin returned 304 Not Modified, so CloudFront reused the cached body.”
 
-    A RefreshHit happens when CloudFront already has a cached object, but the cache entry has expired. Instead of immediately fetching the full object again, CloudFront performs a conditional request to the origin using validators like ETag or Last‑Modified.
-  CloudFront had a cached copy, but the TTL expired.
-It sent a conditional request to the origin using validators.
-The origin returned 304 Not Modified, so CloudFront reused the cached body. 
-CacheHit: 5 ms
-RefreshHit: 25 ms
+  
+ 
 
 If they say “CloudFront is broken” → ❌
 
@@ -103,19 +97,12 @@ Change nothing, wait for TTL
 
     sleep 6
     curl -i https://chewbacca-growl.com/static/index.html
-<img width="1513" height="352" alt="image" src="https://github.com/user-attachments/assets/4fee4626-f7bc-403b-b0dd-558dac321d73" />
-
 
 Evidence to collect:
     x-cache: RefreshHit from cloudfront
     Response body unchanged
     Latency slightly higher than Hit
-   <img width="1421" height="298" alt="image" src="https://github.com/user-attachments/assets/70177772-7cea-47a3-b381-ac25059d6700" />
-   <img width="1433" height="317" alt="image" src="https://github.com/user-attachments/assets/18f0aca6-a690-4c6e-b7fc-e453079017f8" />
-   <img width="1487" height="100" alt="image" src="https://github.com/user-attachments/assets/ad3893ad-5dc4-4bd0-8eb5-3944945e453e" />
-   <img width="1487" height="100" alt="image" src="https://github.com/user-attachments/assets/a99332bc-7d17-4163-bc7c-8df218df8ecd" />
-<img width="1487" height="100" alt="image" src="https://github.com/user-attachments/assets/27c9777e-cb1a-41ab-ac39-dc556b505e5c" />
-
+  
 
 
  
@@ -125,7 +112,7 @@ Explain:
     Origin load reduced
     Still correct behavior
 
-    A RefreshHit means CloudFront’s cached object has expired, but instead of downloading the entire file again, CloudFront sends a conditional request to the origin using:
+  
 If-None-Match (ETag)
 If-Modified-Since (Last‑Modified)
 A 304 response contains no body, so CloudFront does not re-download the file.
@@ -228,6 +215,6 @@ Deliverables:
 12. One-Paragraph Takeaway (You Must Write)
     --> “What does RefreshHit mean, and why is it often better than a Miss?”
 
-    A RefreshHit means CloudFront’s cached copy has expired, so the edge location checks with the origin using conditional headers (ETag or Last‑Modified) to confirm whether the object has changed. If the origin replies “Not Modified,” CloudFront keeps serving the cached body without re‑downloading it. This is often better than a Miss because CloudFront avoids transferring the full file again, dramatically reducing bandwidth and origin load while still guaranteeing the user receives fresh, correct content. In other words, a RefreshHit gives you the accuracy of a revalidation with the efficiency of a cache hit — the best of both worlds.
+
 If they can answer this cleanly, they’re ahead of most working engineers.
 
